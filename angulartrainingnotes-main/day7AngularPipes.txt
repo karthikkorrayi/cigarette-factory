@@ -1,0 +1,144 @@
+create an angular 
+ng new any-name
+
+let the name be pipesDemo
+as well, run the js in the directiry with the comand >> ng serve
+-------------
+
+create a seperate folders as component, model, pipes, guards to organize the code.
+now, create a model class 'student.ts' and write>
+
+export class student{
+	name: string;
+	course: string;
+	marks: number;
+	DOB: Date;
+	gender: string
+}
+
+
+note: dont forget to import strictpropertyinitialization as false in json file
+---------------------
+
+create a service for student with the command > ng g s student
+
+inside the stident service class,
+	constructor(){}
+	
+	//array of student data's..
+	students: sudent[]=[{},{},{}] ;
+	totalMarks: number=600
+	
+
+---------------------
+
+now in app.component.js in AppComponent class with OnInit implementation,
+	constructor(private _serv: StudentService){}
+	students: Student[];
+	totalMarks: number;
+	
+	ngOnInit(): void{
+	this._serv.students;
+	this._serv
+}
+
+
+coming to app.component.html,
+
+<div class="container
+	<table id="student">
+	<tr>
+		<th> Name</th>
+		<th>Course</th>
+		.	
+		.
+		.
+		for all fields..
+	</tr>
+
+	<tr *ngFor="let srd of students">
+	<td>{{std.name}}</td>
+	<td>{{std.courses}}</td>
+	<td>{{(std.marks / total marks)*100}}</td>
+	.
+	.
+	.
+	.for all fileds including logic calculations..
+	</tr>
+	</table>
+
+and for better visualization, 
+implement the design in .css
+
+--------------------------------
+
+from here, to use pipes (a pre-defined pipes),
+go to app.component.html where you'll observe the type or changes in the output that how it was changing 
+according to the given pipe type
+so, include the code in the table divisions as,
+
+	...std.marks/totalMarks | percent}}</td>  // this is like just other than logic in before
+	...std.DOB | date:"fullDate"}}</td>
+  	... std.gender } lowercase}} </td>
+
+we can modify these pipes more like percent decimalisation, date presentation, currency and more..
+as just refer to the documentation..  ;)	
+
+--------------------------------------
+
+while coming to the customized pipes,
+create a pipe with the command > ng g p any name
+
+let the name be percentage,
+in percent.pipe.ts, remove the value in transform which was not required except ..(value: any)
+while coming to the code,
+
+	transform(value:any, totalMarks : number){
+		return value / totalMarks * 100;
+		
+that mean a logic building happens here..
+
+
+where you've to import this to app.component.ts,
+and in app.component.html;
+
+	<td>{{std.marks| percentage:totalMarks}}</td>
+
+
+-----------------------------------------------------
+ do the same for date format as zaid assigned
+------------------------------------------------------
+=====================================================
+
+create a new pipe, let it be filter name
+
+while coming to the component.html,
+ add an input field before division before table as,
+	<div class="container">
+		<div>
+		<input type="text" placeholder="search by gender" 
+			style= "width: 450px; padding: 2px 20px margin 20px 0px; height:30px"
+			[(ngModel)]="filtertext"/></div>
+
+note: import the FormsModule and FilterPipe in the .ts and add filterText with string type with empty initialization in the class 
+
+
+now, come to filter.pipe.ts with PipeTransform implementation in class and write as,
+
+ transform(students: Student[], filterText: string){
+	if(students.length ===0 || filterText===""){
+		return students;
+	}
+	else{
+		return students.filter(student)=>{
+			return student.gender.toLowerCase()=== filterText.toLowerCase();})}}
+
+
+but while coming to component.html, we should get the record as we implented the logic condition in pipe..
+so, 
+	<tr *ngFor="let std if students | filter: filterText">
+
+
+---------------------------------------------------------------------------
+
+		

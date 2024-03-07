@@ -1,0 +1,53 @@
+create guard -> ng g g any-name
+
+go to app.route.ts>> import the created guard
+{path: 'name' , component: CourseComponent, canActivate: [authenticationGuard]},
+
+{path: 'courses' , canActivateChild:[courseGuard], children :[
+	{path: 'course/:id, component: CourseComponent},
+	{path: 'course/:name, component: CourseComponent}
+]},
+{ [path: '**', component: ErrorComponent},
+];
+
+--------------
+
+make change in created guard.ts as false
+let the created guard is course
+
+there are types like;
+1.) the below is for canActivate
+
+imported router
+ export const course: canS =(childRoute, state)=>{
+
+
+
+2.) the below is for canDeactivate --the reference for contact as seperately
+
+where there is a created contact guard,
+
+export const contactGuard: canDeactivateFn<unknown>=(
+	component,
+	currentRoute,
+	currentState,
+	nextState
+)
+
+
+
+better to import some data types to make sure in the class of contact.component.ts with importing FormsModule
+and make changes in html file that to include [(ngModel)]="firstname" and include others too..
+
+mention canExit function after including datatypes in the .ts file
+canExit(){ 
+	if(this.firstName || this.lastName || ... ){
+		return confirm(" you have unsaved changes, want to fuck off??")
+		}
+		else{
+			return true
+		}
+
+to get access in contact guard,
+outside the export
+ => { return component.canExit();};

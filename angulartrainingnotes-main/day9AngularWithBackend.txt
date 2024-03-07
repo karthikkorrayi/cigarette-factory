@@ -1,0 +1,144 @@
+1. create an angular and with model as student.ts
+
+export class Student{
+	studentId: number
+	studentName: string
+	studentAddress: string
+	studentAge: number
+	studentEmail: string
+}
+
+
+2. create a service class with name crud
+
+3. now create a form in parent html including dummy data and css..
+	i.e, putting onSibmit function with in ngModel also including with reference variable in the parent html
+	and adding a viewchild decorator in parent class(this will understood later)
+	--app.component.ts ->
+		@ViewChild('StudentForm') myStudentForm: NgForm;
+
+4. passing the model in the onSubmit function by setting the entire form in parent html with value..
+	onSubmit(students: Student){
+    		console.log(students);
+
+5. add a method in crud.service.ts as,
+	addStudent(val: Student){}
+		
+
+6. to call a service in the parent class, we have to give that service method by dependency injection,
+	like creating a constructor.
+		for better understanding,
+		-->	constructor(private serv: CrudService){
+				this.serv.addStudent(students).subscribe}
+		
+
+7. to add the data to database in backend, service class will helps here in this case like,
+	-->constructor(private http: HttpClient){}
+	   addStudent(val: Student){
+		return this.http.post("http://localhost:8080/student/addStudent",val}
+
+8. now, in the onSubmit function in parent class,
+	constructor(private serv: CrudService){}
+	onSubmit(students: Student){
+		console.log(students);
+     this.serv.addStudent(students).subscribe({
+       next: function(data){ console.log(data);},
+	 error: (err) => {console.log(err.message);
+      }, complete:()=> {console.log("ended");}}) } // can also make it as an alert here too...
+
+note - don't forget to give/replace the provider as in app.config.ts as,
+		  providers: [provideRouter(routes), provideHttpClient()]
+
+
+
+
+-------------------------------------------------------------------------------------------------------------
+
+->> if we want to get authorized like involving jwt token from angular than postman,
+	we have to create an object as header in service class and involving in as follows,
+	const myHeader = new HttpHeaders({'authorization':'anyBearertoken/code'})
+	return this.http ........... val, {headers: myHeader})}
+
+->> to get the student of all data,
+	getStudents(){
+	return this.http.get("http://localhost:8090/student.getStudent"); //in service class
+	//return this.http.get<Student[]>("http://localhost:8090/student.getStudent/"); //returning a observable as asynchronous
+
+where, to get this service to be done, 
+	go to parent class and type,
+	allStudents: Students[] = [] //created a variable of array students which have entire data
+		getStudentsData(){
+			this.serv.getStudents().subscribe({
+				next:(data) => {this.allStudents = data;
+						console.log(this.allStudents)
+			},});}
+
+here, to call the getStudentData function, that is the page to loaded or the component is initialised,
+	ngOnInit():void{ this.getStudentData();} //to be type in the same parent class as a seperate function
+
+
+including the ngFor conditions in parent html as <tr *ngFor="let Student of allStudents">and add event binding
+		 
+
+
+-------------------------------------------------------------------------------------------------------------
+TASK
+->> to delete the students data,
+	in parent html, 
+		<button class="btn-delete" (click)="onDeleteStudent(student.studentId)">Delete</button>
+
+now in parent class,
+	onDeleteStudent(id:number){
+		this.serv.deleteStudent(id).subscribe({ // a call back function
+			next:(val)=> console.log(val), });
+		}
+
+create another function in service class for parent,
+	deleteStudent(id: number){
+		return this.http.delete('http://localhost:8090/student/delete/${id}')}
+
+-------------------------------------------------------------------------------------------------------------
+
+->> to update the student data, it be like - updating the data in the input field display as in the form we created
+	so, make it as 3 steps
+	1 -> get the student based on the id.
+	2 -> populate the form with the student details
+	3 -> change the button value from add student to update student
+
+
+in parent class,
+	onEditStudent(id:number){
+		this.currentId = id;   //for 
+		let currentStudent = this.allStudent.find((s)=>{return s.studentId == id});
+		console.log(currentStudent);
+		this.myStudentForm.setValue({
+			studentName: currentStudent.studentName,
+			studentAddress: currentStudent.studentAddress,
+			//--for age and email is as same..
+		}); this.editMode = true;
+
+		
+
+where in parent html,
+	<input type="submit" value="{{editMode?'Update Student': 'Add Student'}}"/>
+
+while coming to service class,
+	updateStudent(student: Student){
+		this.http.put("http://localhost.../updateStudents", student)}}
+
+but meanwhile in parent class,
+ making a condition for the addStudent as,
+	if(!this.editMode){
+		this.serv.addStudent(students...
+		.
+		. 
+		.  	//paste the addStudent function code
+		} else{ 
+			students.studentId = this.currentID;
+			this.serv.UpdateStudent(students).sunscribe({
+					next:(val) => console.log(val),}
+
+note - 
+	Student updateStuden
+
+----------incomplete

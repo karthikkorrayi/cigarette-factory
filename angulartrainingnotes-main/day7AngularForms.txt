@@ -1,0 +1,68 @@
+-> create a simple html and css files in creating a form
+
+-----html - app.component.html
+<div class="forms">
+	<h2 id="registration"> Registration Form</h2>
+	<form>
+	<label for="fname"> First Name</label>
+	<input type="text" id="fname" placeholder="your first name">
+	.
+	.
+	 continue creating a form like first name, last name, email, country with a dropdown, 
+	 gender with radio input type, and submit
+	.
+	.
+	and modify the style as in css
+
+where we are involving an event binding ngForm making like a template reference variable
+to call a function for submit in the form element,
+	<form (ngSubmit)="onSubmit()" #myForm = > ...   //a template reference variable for angular
+
+
+and in app.component.ts,
+ 	onSubmit(form: NgForm){ 
+		console.log(form)
+	}
+	
+
+
+
+notes incomplete--
+
+----------------------------------------------------
+--> validating a form
+
+for some fileds, where it was required to fill in the form, where it can be helps by involving 
+internal elements as requires=""
+and involving the valid email can also be resolved by giving the internal element in the email field as email=""
+.
+and also involving the functions for submit as per if the form is valid or invalid that to be able or disabled..
+
+
+notes incomplete--
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------
+
+rough note for understanding the steps
+.
+STEPS;
+1. create a reference template variable by giving the form type - ngForm in the .html
+2. calling the function onSubmit()
+3. getting/inputting the template-reference-variable in viewChild in .ts
+4. on every field, we have to add ngModel in .html
+5. giving name for all the fields for which whatever the value is involved to represent
+
+6. after that, we did a validation like it is required for the fields involved, we involved touch/click, untouched,
+valid and invalid attributes were involved too..

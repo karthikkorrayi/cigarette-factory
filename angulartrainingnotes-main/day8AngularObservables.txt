@@ -1,0 +1,59 @@
+note this as in the class file (.ts) --->
+
+ myobservable = new Observable (observer) => {
+	console.log("observable starts...")
+	observer.next('1')
+	observer.next('2')
+	setTimeout(()=>{observer.next('3')}, 2000);  	//setting time for the data is emitted
+	setTime(()=>{observer.error(new Error('something went wromg')}, 3000);   //setting data if there is error exist
+	setTime(()=>{observer.complete();}, 5000)
+	.
+	.
+	.}) 	ngOnInit():void{
+		this.myobservable.subscribe((val)=>{
+			console.log(val);
+		}, 
+		(err)=>{ alert(err.message)},
+
+		()=>{ alert("Observable has completed on emitting all the data..");}
+);
+
+
+in other wise, we can write like..
+	 this.myobservable.subscribe{
+		next:(val) => console.log(val),
+		error:(err)=> alert(err.message),
+		complete:()=> alert('observable has completed om emitting all the data..'),
+	});
+		
+
+
+
+-----------------------------------------------------------------------
+
+observables in array;
+
+creating an array, and getting in the function with new observable,
+
+arr1 = []
+myObservable = from(this.arr1);
+
+
+transformedObservable = this.myObservable.pipe{
+	map(val) => {
+		return val = * 5;
+	}));
+filteredObs = this.transformedObservable.pipe{
+	filter(val) => {
+		return val >= 25;
+	}));
+
+
+this.filteredObs.subscribe({
+	next:(val) => console.log(val),
+		error:(err)=> alert(err.message),
+		complete:()=> alert('observable has completed om emitting all the data..'),
+	});
+
+
+

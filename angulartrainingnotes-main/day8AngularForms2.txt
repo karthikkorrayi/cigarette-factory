@@ -1,0 +1,17 @@
+---> reactive forms
+
+creating a global variabl in the class (app.component.ts), 
+
+	export class  AppComponent implements OnInit{
+	 reactiveForm: FormGroup;
+	 ngOnInit(): void{
+		this.reactiveForm = new FormGroup({
+			firstName: new FormControl(null);
+			lastName: new FormControl(null);
+			email: new FormControl(null);
+			gender: new FormControl(null);
+			country: new FormControl(null);
+
+
+
+--incomplete...
