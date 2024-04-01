@@ -1,0 +1,29 @@
+.branch-container {
+    display: flex;
+    margin: 15px 0px;
+    padding: 5px 5px;
+    border: 2px solid goldenrod;
+    border-radius: 5px;
+  }
+  
+  .image-container {
+    background-color: aliceblue;
+    height: 70px;
+    width: 70px;
+    padding: 10px 0px;
+    text-align: center;
+  }
+  
+  .details-container {
+    display: flex;
+    margin: 0px 20px;
+  }
+  
+  .details {
+    width: 140px;
+  }
+  
+  .options {
+      width: 220px;
+      margin-left: 80px;
+  } 

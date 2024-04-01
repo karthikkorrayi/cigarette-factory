@@ -1,0 +1,25 @@
+<div *ngFor="let b of branches">
+    <div [ngStyle]="{'background-color':b.availability == 'available'?'red':'green'}" class="branch-container">
+        <h3>{{b.id}}</h3>
+        <div class="image-container">
+        <img [src]="b.image" style="max-height: 50px; max-width: 50px;"/>
+        </div>
+        <!-- <div class="name-container">
+            <h6>{{b.name}}</h6>
+        </div> -->
+    
+        <div class="details-container">
+            <div [ngStyle]="{'color':b.availability == 'available'?'green':'red'}" class="details">{{b.availability}}</div>
+            <div class="details">{{b.name}}</div>
+            <div class="details"><b>city: </b>{{b.city}}</div>
+        </div>
+    
+        <div class="options">
+            <button class="btn btn-success" >Show Details</button>
+            <button *ngIf="b.availability == 'available'" class="btn btn-warning"> Book now</button>
+            <button *ngIf="b.availability=='not-available'" class="btn btn-primary">Notify me</button>
+          </div>
+    </div>
+
+    
+</div>

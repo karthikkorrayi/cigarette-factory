@@ -1,0 +1,17 @@
+.body {
+    display: flex;
+    height: 280px;
+    padding: 30px 40px;
+    background-color: aquamarine;
+  }
+  
+  .site-slogan {
+    width: 420px;
+    margin-left: 50px;
+    text-align: center;
+  }
+  
+  h2 {
+    font-size: 45px;
+  }
+  

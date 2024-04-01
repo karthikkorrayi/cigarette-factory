@@ -1,0 +1,21 @@
+.navbar {
+    display: flex;
+    background-color: lavender;
+  }
+  
+  .site-name {
+    padding: 5px 30px;
+    color: black;
+  }
+  
+  .site-menu {
+    padding: 10px 30px;
+    margin-left: 100px;
+  }
+  
+  a {
+    text-decoration: none;
+    color: purple;
+    margin: 8px 10px;
+  }
+  
