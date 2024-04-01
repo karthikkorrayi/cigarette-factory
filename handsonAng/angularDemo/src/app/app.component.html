@@ -1,0 +1,26 @@
+<!--concepts about directives...-->
+<!-- ngIf -->
+<!-- <div *ngIf="flag">messaging like user added successfully</div> -->
+
+
+<!--ngIf with else-->
+<!-- <div *ngIf="flag else error"> user added without error</div>
+<ng-template #error> user adding error</ng-template> -->
+
+
+<!--ngIf with then and else-->
+<!-- <div *ngIf="flag; then upd_msg else error"> user added added with no update</div>
+<ng-template #upd_msg> user was updated here</ng-template>
+<ng-template #error> user not added and updated</ng-template> -->
+
+<ul>
+  <li *ngFor="let emp of employees; even as e; odd as o">
+    
+    <div *ngIf="e" style="background-color: aqua;">
+    {{emp.empId}} {{emp.empName}} {{emp.empCity}}
+    </div>
+    <div *ngIf="o" style="background-color: rgb(255, 102, 0);">
+      {{emp.empId}} {{emp.empName}} {{emp.empCity}}
+      </div>
+  </li>
+</ul>
