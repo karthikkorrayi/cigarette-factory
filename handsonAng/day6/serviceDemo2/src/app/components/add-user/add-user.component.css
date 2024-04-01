@@ -1,0 +1,28 @@
+.form {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  
+  #username {
+    width: 220px;
+    height: 30px;
+    padding: 2px 30px;
+    margin: 5px 0px;
+    border: none;
+  }
+  
+  #status {
+    width: 280px;
+    height: 35px;
+    font-size: 20px;
+    padding: 2px 30px;
+    margin: 5px 0px;
+  }
+  
+  button {
+    width: 280px;
+    height: 35px;
+    padding: 2px 30px;
+    margin: 5px 0px;
+    background-color: darkolivegreen;
+  }
