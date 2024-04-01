@@ -1,0 +1,19 @@
+<h1>parent compo</h1>
+<!-- <app-child [loggedin] = "userlogin"></app-child> -->
+
+
+<div>
+  <button (click)="userlogin=true">login</button>
+  <button (click)="userlogin=false">logout</button>  
+</div>
+<!-- <app-child [setloggedin]="userlogin"></app-child> -->
+<!-- <app-child [loggedIn]="userlogin"></app-child> -->
+
+<!-- <app-child #child [loggedIn]="userlogin"></app-child>
+<div>
+  {{child.name}}
+  <button (click)="child.propose()">propose me</button>
+</div> -->
+
+
+<app-child (greetEvent)="greetMe($event)"> </app-child>
