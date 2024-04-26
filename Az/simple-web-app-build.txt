@@ -59,3 +59,5 @@ While coming to the Azure Bash,
 paste the "<valid-link>" in the following command as,
 >> git remote add azure '<valid-link>'
 >> git push azure master
+.
+now click on domain link in the portal of web services -> results an output
