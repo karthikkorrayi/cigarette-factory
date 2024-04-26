@@ -1,0 +1,22 @@
+installations required - 
+dotNet 8  (https://dotnet.microsoft.com/en-us/download)
+Azure CLI (https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+.................................................................................
+
+where we can create a new webapp by following commands as,
+>> dotnet new webapp -n Demo --framework net8.0
+>> cd Demo
+>> dotnet run --urls=https://localhost:5001/
+.
+Open a web browser, and navigate to the app at "https://localhost:5001"
+You see the template ASP.NET Core 8.0 web app displayed in the page.
+
+.
+While coming to the Azure part,
+follow the commands
+>> az login
+>> az webapp up --sku F1 --name Hello --os-type windows
+enter - which creates a resource group and web app service itself
+.
+
+and now, You can launch the app at "http://Hello.azurewebsites.net"
