@@ -16,7 +16,8 @@ While coming to the Azure part,
 follow the commands
 >> az login
 >> az webapp up --sku F1 --name Hello --os-type windows
-enter - which creates a resource group and web app service itself
+enter 
+--> which creates a resource group and web app service itself
 .
 
 and now, You can launch the app at "http://Hello.azurewebsites.net"
