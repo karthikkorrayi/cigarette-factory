@@ -1,0 +1,61 @@
+This is a simple html to Azure Web App deploy using Azure Portal and it's bash
+..................................................................................................................
+
+In the Portal home page,
+select the following;
+Create a resource -> Web App
+
+In the basics part,
+I metioned
+	Resource Group - pizzaResourceGroup (create new)
+	Web App name   - pizza-web
+	publish	       - code
+	Runtime stack  - ASP.NET V4.8
+	Region 	       - East Asia 
+	Pricing plan as free
+	-->> review + create
+
+It will create its new Resource group with web app service as a part of domain.
+Now, To get usage of domain, I am cloning a seperate simple project from github,
+as per that concludes the basic web app
+
+__________________________________________________________________________________________________________________
+
+While coming to the Azure Bash,
+
+>> git clone https://github.com/fouldsy/azure-mol-samples-2nd-ed.git
+.
+>> git config --global user.email "karthikkorrayii@gmail.com"
+>> git config --global user.name "karthikkorrayi"
+.
+>> cd azure azure-mol-samples-2nd-ed/03/prod
+>> git init
+>> git add .
+>> git commit -m "pizza!"
+.
+
+>> az webapp deployment source config-local-git --name pizza-web --resource-group pizzaResourceGroup
+	{
+  		"url": "https://None@pizza-web.scm.azurewebsites.net/pizza-web.git"
+	}
+.
+
+>> az webapp deployment list-publishing-credentials --name pizza-web --resource-group pizzaResourceGroup
+	{
+  		"id": "your_id",
+ 		 "kind": null,
+ 		 "location": "East Asia",
+  		"name": "pizza-web",
+  		"publishingPassword": "generates_your_password",
+  		"publishingPasswordHash": null,
+  		"publishingPasswordHashSalt": null,
+  		"publishingUserName": "$pizza-web",
+  		"resourceGroup": "pizzaResourceGroup",
+  		"scmUri": "<valid-link>",
+  		"tags": {},
+  		"type": "Microsoft.Web/sites/publishingcredentials"
+	}
+.
+paste the "<valid-link>" in the following command as,
+>> git remote add azure '<valid-link>'
+>> git push azure master
