@@ -1,0 +1,151 @@
+Project Steps :-
+1. Preparing the infrastructure
+2. Preparing the source code repo
+3. Create a build pipeline
+4. Create a release pipeline
+
+
+
+_________________________________________________________________________________________________________________
+_________________________________________________________________________________________________________________
+
+
+
+STEP-1  ->>
+
+Click on new project in an organization in azureDev,
+Where I named as 'dotNet_app' with public access in agile with git version.
+
+To build an Infrastructure in Dev as using arm templates which is part of our code.
+
+----------------------------------------------------------------------------------------------------------------
+
+
+STEP-2  ->>
+
+Clone the below link to our azure git repo
+
+https://github.com/karthikkorrayi/PartsUnlimited.git
+
+----------------------------------------------------------------------------------------------------------------
+
+
+STEP-3  ->>
+
+Click on create a pipeline where,
+	Agent pool : 	      Azure pipelines
+	Agent Specifications: windows-2019 (better)
+
+
+
+Add tasks in the agent job as,
+
+>task1: NuGet restore
+	Command  	 - restore
+	Path to Solution - PartsUnlimited-aspnet45/PartsUnlimited.sln (according to the cloned project)
+	make sure to select the task version as *2
+
+>task2: Build Solution (Visual Studio Build)
+	Solution 	  		 - **\*.sln
+	MSBuild Arguments(copy as it is) - /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.stagingDirectory)" /p:IncludeServerNameInBuildInfo=True /p:GenerateBuildInfoConfigFile=true /p:BuildSymbolStorePath="$(SymbolPath)" /p:ReferencePath="C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\Extensions\Microsoft\Pex"
+	Platform 			 - $(BuildPlatform)
+	Configuration 			 - $(BuildConfiguration)
+	make sure to select the task version as *1
+
+>task3: Copy Files
+	Source Folder 	- $(build.sourcesdirectory)
+	Contents 	- **/*.json
+	Target Folder 	- $(Build.ArtifactStagingDirectory)
+	make sure to select the task version as *2
+
+>task4: Publish Artifact
+	Path to publish	- $(Build.ArtifactStagingDirectory)
+	make sure to select the task version as *1	
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------
+
+
+STEP-4  ->>
+
+create a release pipeline
+ as I creating the release with single stage,
+	Let the Stage name - Prod
+
+Adding tasks in angent job in Prod
+(make sure that the Agent job has 'Hosted Windows 2019 with VS2019' Agent pool)
+
+>task1: ARM Template deployment
+	Deployment scope	   - Resource Group
+	Authorize the Azure Portal Account
+	Action should be in create and update resource group
+	Resource Group		   - dotNetRG (create new in Azure portal)
+	Location 		   - EastUS
+	Template location	   - Linked artifact
+	Template (path)		   - $(System.DefaultWorkingDirectory)/_dotNet_app-CI/drop/PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetup.json
+	Template parameters (path) - $(System.DefaultWorkingDirectory)/_dotNet_app-CI/drop/PartsUnlimited-aspnet45/env/PartsUnlimitedEnv/Templates/FullEnvironmentSetup.param.json
+	make sure to select the task version as *3
+
+>task2: Azure App Service Deploy
+	App type		- webApp
+	App Service name	- $(WebsiteName)
+	Package or folder(path)	- $(System.DefaultWorkingDirectory)/_dotNet_app-CI/drop/PartsUnlimitedWebsite.zip
+	make sure to select the task version as *3
+
+
+
+
+Where I got the error while variables with their particular value in the release pipeline,
+So, I modified the 'FullEnvironmentSetup.param.json' file as
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "WebsiteName": {
+      "value": "dotNetwa01"
+    },
+    "PUL_ServerName": {
+      "value": "dotNetsqls01"
+    },
+    "PUL_DBLogin": {
+      "value": "AdminUser"
+    },
+    "PUL_DBPassword": {
+      "value": "P2ssw0rd"
+    },
+    "PUL_DBPasswordForTest": {
+      "value": "P2ssw0rd"
+    },
+    "PUL_DBName": {
+      "value": "PartsUnlimitedDB"
+    },
+    "PUL_DBCollation": {
+      "value": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "PUL_DBEdition": {
+      "value": "Basic"
+    },
+    "PUL_HostingPlanName": {
+      "value": "dotNetasp01"
+    },
+    "PUL_HostingPlanSKU": {
+      "value": "Standard"
+    },
+    "PUL_HostingPlanWorkerSize": {
+      "value": "0"
+    },
+    "EnableRules": {
+      "value": false
+    }
+  }
+}
+
+
+
+================> Check the resource and browse the product
+
+
