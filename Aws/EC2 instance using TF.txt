@@ -1,0 +1,63 @@
+>terminal
+	aws configure
+		> ACCESS ID
+		> SECRET_KEY 		____________________________________________(1)
+
+create a file in a particular path folder with rename main.tf
+
+>main.tf
+	provider "aws" {
+		region = "ap-south-1"
+	}
+
+	resource "aws_instance" "Terraform_Demo" {
+		ami = "ami-0swbkw"              	____________________________________________(2)
+		instance_type = "t2.micro"     
+		keyname = "Dev-UbuntuKey"		____________________________________________(3)
+		tags = {
+			Name = "Terraform Demo"
+		}
+	}  
+
+
+
+.
+-save the file and run the command > terraform init
+		   run the command > terraform validate
+		   run the command > terraform plan
+		   run the command > terraform apply
+					> yes
+
+-if you want to delete, run the command > terraform destroy	                  
+
+
+
+........................................................................................................................
+(1). login to aws >> go to user name >> click on 'My Security Credentials'
+	>> click on 'Create access key' >> copy and paste it on follow defines
+
+(2). to get an ami, go to 'EC2' >> click on 'Launch instances' >> type 'ubuntu' 
+	>> copy the 'ami id' and paste the follow define
+
+(3). I can choose which key I want So,
+	>>Key pairs >> copy and paste the follow define
+
+
+
+
+
+
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ref: 
+Download terraform - https://developer.hashicorp.com/terraform/install?product_intent=terraform
+			extract in C drive > windows > System32
+			search 'edit the system environment variables' > environment variables
+				> edit > new > give the path and type \terraform\ > ok > ok > ok
+
+Download VS Code - https://code.visualstudio.com/Download
+			go to extensions and install HashiCorp Terraform and Terraform Autocomplete
+
+Download AWS CLI - https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html

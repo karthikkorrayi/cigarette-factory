@@ -1,0 +1,98 @@
+VPC (Virtual Private Cloud)
+ - can launch AWS resources in a logical isolated virtual network (VPC).
+ - can specify a set of IP address range for the VPC
+ - can provide a public as well as private Subnet, Internet Gateway,
+   Route Table, Security Group for the Amazon VPC
+ 
+ Components of VPC's -
+	1. VPC Sizing
+	   - VPC needs a set of IP addresses in the form of CIDR(Classless Inter-Domain Routing)
+	     range between 10.0.0.0/16(2^16) and 10.0.0.0/28(2^4)
+		Where 2^16 provides 65536 IP addresses and 2^4 provides 16 IP addresses
+	   - We can also resize the VPC by expanding the secondary Ipv4 address (CIDRs) on AWS
+	
+	2. Route Table
+	  - contains set of rules which is also known as "routes".
+	  - used to classify where our network traffic (from Subnet) would be routed.
+	  - tells the network packets in which way they should be routed to their destination.
+
+	3. Subnets
+	  (i) Public Subnets
+		- A Public Subnet routes 0.0.0.0/0 through an Internet Gateway.
+		- can also receive inbound traffic through the Internet Gateway as long as
+		  their security groups and Network ACLs allow it.
+  	  (ii) Private Subnets
+		- If a subnet doesn't have a route to the Internet Gateway, known as Private Subnet.
+		- either doesnot allow outbound traffic to the internet or has a route that send all outbound traffic
+		  via the NAT(Network Address Translation) gateway.
+
+	4. Gateways
+	  (i) Internet Gateway
+		- which allows the communication between instances in the VPC and Internet.
+		- is a router which provides the Internet Service.
+	  (ii) NAT Gateway
+		- similar to Unternet Gateway but the difference is it allows Private Subnet to access the internet.
+		- doesnt support IPv6 traffic and works only in one way
+		- uses only an egress.
+
+	5. Security Group
+	    - works as a virtual firewall for the EC instances in AWS.
+	    - controls the incoming and outgoing network traffic.
+	    - if we allow an incoming rule(port), it will be automatically applicable to the outgoing rule
+	      This feature says that Security Groups are "stateful".
+
+	6. Network ACL(Access Control List)
+	    - works as the virtual firewall for the VPC subnets.
+	    - Every instance in the particular subnet associated with the NACL will be applicable to that instance also.
+	    - it is "stateless", because changes applied for the incoming rule are
+	      automatically applicable to the outgoing rule.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+MODEL;
+
+					     VPC	
+	-----------------------------------------
+        |				        |
+	|			      		|
+        |---------------------------------------|
+	||  -----------------------------      ||
+        ||  | 	10.0.1.0/24		|      ||
+  ------||------------------------ EC2  |- - - -|- - - - - - - - - - - - - - - - - - - - - -
+  |     ||  | 	Public Subnet-1	    	|      ||					    |	
+  |     ||  -----------------------------      ||					    
+  |     ||  Availability Zone A     	       ||				    Main Route Table
+  |     |---------------------------------------|				Destination 	Target
+Router  |				|       |				10.0.0.0/16     local
+  |     |			Internet Gateway ========>Internet		0.0.0.0	        internet gateway
+  |     |				|       |					    
+  |     |---------------------------------------|					    |					  
+  |	||  -----------------------------      ||					    |
+  |     ||  | 	10.0.1.0/24		|      ||					    |
+  ------||------------------------ EC2  |- - - -|- - - - - - - - - - - - - - - - - - - - - -
+        ||  | 	Public Subnet-2		|      ||
+        ||  -----------------------------      ||
+        ||  Availability Zone B                ||
+        |---------------------------------------|
+        |				        |
+	-----------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
