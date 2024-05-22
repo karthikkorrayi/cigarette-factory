@@ -1,0 +1,64 @@
+Create instance;
+
+	EC2 instance 
+	  -> launch instances 
+	    -> Ubuntu Server 20.04 LTS 
+	      -> choose instance type (t2.micro)
+		-> size - 15 
+		  -> next -> next 
+		    -> select an existing security group, select default
+			-> review and launch 
+			  -> launch 
+			    -> keypair - windows RSA
+
+
+--------------
+Connect to ubuntu ec2 instance;
+Open terminal
+	> chmod 400 ~/.ssh/my-key-pair.pem
+	> ssh -i ~/.ssh/my-key-pair.pem ubuntu@<your-ec2-public-ip>
+
+
+--------------
+install GitLab runner on ubuntu;
+in the ubuntu, run the command
+	> curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash
+	> sudo apt-get install gitlab-runner
+
+grant permissions as,
+	> cd /home
+	> ls
+	> sudo visudo
+	 >> paste the below text under root,
+		gitlab-runner ALL=(ALL:ALL) ALL
+	 >> press ctrl+x -> press Y -> ENTER
+	> sudo gitlab-runner --version
+	> sudo gitlab-runner status
+	> sudo gitlab-runner start
+	> sudo gitlab-runner stop
+	> sudo gitlab-runner restart
+
+registering
+	> sudo gitlab-runner register
+		> runner url
+		> registration token
+		> description
+		> tags
+		> shell
+
+
+
+
+
+
+
+
+
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ref;
+install gitlab runner in ubuntu - https://docs.gitlab.com/runner/install/linux-repository.html
+register gitlab runner - https://docs.gitlab.com/runner/register/index.html

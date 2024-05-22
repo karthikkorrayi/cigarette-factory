@@ -1,0 +1,23 @@
+SSH(Secure Shell) key
+- it authenticates to the GitLab server without using username and password each time
+
+Before creating SSH key, you need to install git and,
+run the comand in git-bash as,
+
+	> git config --global user.name "<user_name>"
+	> git config --global user.email "<user.email@g.com>"
+	> ssh-keygen
+		>enter > enter > enter
+go to the path /c/user/.ssh/file with pub extension --> copy the text and paste in gitlab and click on add key
+
+----------------------------------------------------------------------------------------------------------------
+
+clone gitlab with SSH;
+
+	> git clone "SSH_Clone_Copy"
+	> cd demo
+	> touch sample.txt
+	> ls
+	> git add .
+	> git commit -m "sample file added"
+	> git push -u origin main

@@ -1,0 +1,139 @@
+AWS account
+	-> click on EC2 instance 
+	  -> launch instance
+	    -> select Ubuntu 20.04 LTS
+	      -> next : configure details
+		-> next > Add Storage
+		  -> change the size 8 replace with 15
+		    -> click on next : add tags
+		      -> next : configure security group
+			-> select existing security group and check on default on review and launch
+			  -> click on launch
+			    -> select a key pair - RSA
+.
+copy public IPv4 and open in terminal
+as,
+	> chmod 400 ~/.ssh/my-key-pair.pem
+	> ssh -i ~/.ssh/my-key-pair.pem ubuntu@<your-ec2-public-ip
+
+now give commands for gitlab-runner installation
+	>
+	> sudo apt-get install gitlab-runner
+	> sudo gitlab-runner --version
+	> sudo gitlab-runner status
+
+commands for register
+	>
+	  >> <gitlab-instance-url>
+	  >> <registration-token>
+	  >> <description>
+	  >> <tags>
+	  >> shell
+
+------------------------------------------------------------------------------------------------
+
+Now, 
+install OpenJDK on Ubuntu
+	> sudo apt update
+	> sudo apt install default-jdk -y
+	> java --version
+
+install maven on Ubuntu
+	> sudo apt install maven
+	> mvn --version
+
+if to remove maven on Ubuntu
+	> sudo apt remove maven
+
+------------------------------------------------------------------------------------------------
+
+Now creating Java-Maven project
+create a directory somewhere and start a shell in that directory so run the command as,
+	> mvn archtype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
+	> ls
+	my-app
+
+	> cd my-app
+	> ls
+	> cd
+	> git clone <gitlab-link>
+		>> user_name
+		>> password
+	> ls
+	my-app java-maven
+
+	> cd my-app
+	> ls
+	> cd
+	> cd java-maven
+	> ls
+	> cd
+	> cd my-app
+	> sudo cp -R ./* /home/ubuntu/java-maven
+	> cd
+	> ls
+	> cd java-maven
+	> git add .
+	> git commit -m "java-project using maven"
+	> git push origin main
+		>> user_name
+		>> password
+	
+
+------------------------------------------------------------------------------------------------
+
+CI/CD pipeline;
+
+
+step1 - create .gitlab-ci.yml in root of GitLab Maven Project Branch which is in repo
+
+step2 - paste below code into it
+	
+	stages:
+	  - build
+	
+	build-java-project:
+	  stage: build
+	  script:
+	    mvn package
+	  artifacts:
+	    paths:
+	      - /home/gitlab-runner/
+
+    commit changes and save
+
+step3 - check gitlab pipeline status
+  click on CI/CD Pipelines and jobs
+  
+
+step4 - check .jar is created for Maven project in gitlab-runner
+	> cd /home/gitlab-runner
+	> ls
+	builds
+
+	> cd builds
+	> ls
+	Arzed27r
+
+	> cd Arzed27r
+	> ls
+	0
+
+	> cd 0/.../java-maven
+	> ls
+	README.md pom.xml src target
+
+	> cd target
+	> ls
+	we'll find the my-app-1.0-SNAPSHOT.jar file here
+
+
+
+
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ref-
+gitlab runner installation - https://docs.gitlab.com/runner/install/linux-repository.html
+register gitlab runner - https://docs.gitlab.com/runner/register/index.html

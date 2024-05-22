@@ -1,0 +1,37 @@
+GitLab Runner
+ - is an application that works with gitLab CI/CD to run jobs in a pipeline
+ - used in CI(Continues Integration)
+
+.
+Installation to be done in C with seperate in folder and with a rename "gitlab-runner"
+to check whether it is installed or not, type the following comand
+				> gitlab-runner --version
+
+------------------------------------------------------------------------------------------------
+Registering in GitLab runner
+
+Open the prompt with particular path of gitlab-runner.exe,
+run 	> .\gitlab-runner.exe register
+	> enter registration token : (which is there in project settings > CI/CD > expand runners > copy)
+	> enter description :
+	> enter tags : ssh ,ci
+	> shell
+
+
+Start the GitLab runner
+run	> .\gitlab-runner.exe start
+refresh the page in runner
+
+
+
+
+
+
+
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ref:
+gitlab runner installation - hhttps://docs.gitlab.com/runner/install/index.html

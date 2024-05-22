@@ -1,0 +1,50 @@
+Create Linux EC2 instance in AWS;
+ AWS account 
+	-> EC2instances 
+	  -> launch instance 
+	    -> select Amazon Linux 2 
+	      -> next 
+		-> configure details
+		  -> next 
+		    -> add storage 
+		      -> change size 8 replace with 15 
+			-> next 
+			  -> add tags 
+			    -> next
+			      -> configure securtity group 
+				-> select existing security group and check on default
+				  -> review and launch 
+				    -> launch 
+				      -> select a key pair - RSA
+
+.
+copy public ipv address and open linux in command prompt or terminal
+as,
+	> chmod 400 ~/.ssh/my-key-pair.pem
+	> ssh -i ~/.ssh/my-key-pair.pem ubuntu@<your-ec2-public-ip
+
+.
+give a command in the linux as
+	>
+	> sudo apt-get install gitlab-runner
+
+register gitlab runner
+	>
+	  >> <gitlab-instance-url>
+	  >> <registration-token>
+	  >> <description>
+	  >> <tags>
+	  >> shell
+
+checking gitlab runner details
+	> sudo gitlab-runner --version
+	> sudo gitlab-runner status
+
+
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ref-
+gitlab runner installation - https://docs.gitlab.com/runner/install/linux-repository.html
+register gitlab runner - https://docs.gitlab.com/runner/register/index.html

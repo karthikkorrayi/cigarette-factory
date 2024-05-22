@@ -1,0 +1,49 @@
+After adding src, pom.xml and .gitlab-ci.yml in repo,
+
+Install Docker on Ubuntu;
+	> sudo apt update
+	> sudo apt install docker.io
+	> docker --version
+
+
+create 'Dockerfile' in root directory of GitLab Maven Project Branch and paste the below lines,
+	
+	FROM openjdk
+	COPY target/*.jar /
+	EXPOSE 8080
+	ENTRYPOINT ["java","-jar","/my-app-1.0-SNAPSHOT.jar"]
+
+
+
+Build Docker image using CI/CD
+Update .gitlab-ci.yml file with below code
+	
+	stages:
+	  - build
+	  - build-docker-image
+
+	build-java-project
+	  stage: build
+	  script:
+	    mvn package
+	  artifacts:
+	    paths:
+	      - /home/gitlab-runner/
+	  
+	build-docker-image:
+	  stage: build-docker-image
+	  script:
+	    - docker info
+	    - docker build -t <gitlab-repository> .
+
+
+
+if it is failed
+then run the following command in ubuntu/java-maven as,
+
+	> sudo chmod 666 /var/run/docker.sock
+
+
+
+to check docker in ubuntu/java-maven
+	> docker images
