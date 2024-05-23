@@ -1,0 +1,36 @@
+image: hashicorp/terraform:latest
+
+stages:
+  - init
+  - validate
+  - plan
+  - apply
+
+before_script:
+  - terraform --version
+  - terraform init -reconfigure -backend-config="bucket=ishani-karthik-bucket" -backend-config="key=karthik/vpc.tfstate" -backend-config="region=ap-south-1"
+
+
+variables:
+  aws_access_key: "${AWS_ACCESS_KEY_ID}"
+  aws_secret_key: "${AWS_SECRET_ACCESS_KEY}"
+
+init:
+  stage: init
+  script:
+    - terraform init -reconfigure -backend-config="bucket=ishani-karthik-bucket" -backend-config="key=karthik/vpc.tfstate" -backend-config="region=ap-south-1"
+    
+validate:
+  stage: validate
+  script:
+   - terraform validate
+
+plan:
+  stage: plan
+  script:
+    - terraform plan -out=tfplan
+
+apply:
+  stage: apply
+  script:
+    - terraform apply -auto-approve
