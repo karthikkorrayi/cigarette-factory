@@ -1,4 +1,4 @@
-Create a S3 bucket resource of aws
+Created a S3 bucket resource of aws of angular project name EAD
 and below is the .gitlab-ci.yaml file for pipeline,
 .
 image: node:18
