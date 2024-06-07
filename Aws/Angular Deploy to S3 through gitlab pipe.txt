@@ -1,0 +1,44 @@
+Create a S3 bucket resource of aws
+and below is the .gitlab-ci.yaml file for pipeline,
+.
+image: node:18
+
+stages:
+  - build
+  - deploy
+
+variables:
+  AWS_S3_BUCKET: kk-buck
+  REGION: ap-south-1
+
+before_script:
+  - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+  - source ~/.nvm/nvm.sh
+  - nvm install 18
+  - nvm use 18
+
+build:
+  stage: build
+  only:
+    - angD1
+  script:
+    - cd EAD-Angular
+    - npm install
+    - npm install @angular/cli
+    - npx ng build --configuration production
+  artifacts:
+    paths:
+      - EAD-Angular/dist/
+
+deploy:
+  stage: deploy
+  only:
+    - angD1
+  script:
+    - echo "Restoring artifacts"
+    - ls -la
+    - ls -la EAD-Angular
+    - aws s3 cp EAD-Angular/dist/ead/browser s3://${AWS_S3_BUCKET}/ --recursive --region ${REGION}
+  environment:
+    name: production
+    url: https://${AWS_S3_BUCKET}.s3.amazonaws.com
