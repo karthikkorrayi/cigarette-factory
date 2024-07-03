@@ -1,0 +1,17 @@
+trigger:
+- iac-bicep-templates
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'SUB-TECH-DEMO'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az deployment group create \
+        --resource-group RG-TEC-SA-EAD-UAT \
+        --template-file biceps/storage.bicep
+    addSpnToEnvironment: true
