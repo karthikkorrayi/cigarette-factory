@@ -90,4 +90,34 @@ under that,
 
 	This will validate the extension and once validation succeeded 
 	you can edit or share the extension by Right-click your extension.
+
+
+
+........................................................................................................................
+If we're running through local,
+better use the following formats,
+
+$env:LOCAL="true"
+$env:SUBSCRIPTION_ID="23tty..."
+$env:CLIENT_ID="4t665uhymj67i..."
+$env:SECRET="6hyyhnyu-..."
+$env:TENANT_ID="ad534rgbm..."
+$env:RESOURCE_GROUP_NAME="RG-DEVOPS-EXPLORE"
+$env:VM_NAME="myVM"
+$env:VM_SIZE="Standard_DS1_v2"
+$env:ADMIN_USER_NAME="adminuser"
+$env:ADMIN_PASSWORD="P@ssw0rd123"
+$env:CONFIRM_PASSWORD="P@ssw0rd123"
+$env:AUTHENTICATION_TYPE="password"
+$env:INBOUND_PORT_RULES="all"
+$env:NIC_NAME="myNIC"
+$env:SUBNET_NAME="mySubnet"
+$env:PUBLIC_IP_NAME="myvm-public-ip"
+$env:VNET_NAME="myVNet"
+$env:OS_DISK_NAME="myOSDisk"
+$env:OS_DISK_SIZE_GB="128"
+$env:OS_TYPE="windows"
+
+Make sure to check with code if we're runing through local,
+which mean that the az subscription details and authentications were not involved here
 	
