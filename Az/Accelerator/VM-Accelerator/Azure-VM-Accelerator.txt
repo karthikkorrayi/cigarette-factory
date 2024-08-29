@@ -1,0 +1,123 @@
+Build and publish custom pipeline task extensions in Azure DevOps
+
+So, here I created an extension as Azure VM
+..........................................................................................................
+
+Here's the folder structured need to be remembered,
+
+	VM-ACCELERATOR
+	|- buildandreleasetask
+	|	|-- node_modules
+	|	|-- .gitignore
+	|	|-- .taskkey
+	|	|-- index.js
+	|	|-- index.ts
+	|	|-- package-lock.json
+	|	|-- package.json
+	|	|-- task.json
+	|	|-- tsconfig.json
+	|
+	|- images
+	|	| -- extension-icon.png
+	|
+	|- KorrayiKarthik.734939032-0.0.0.vsix
+	|- LICENSE
+	|- vss-extension.json
+
+
+..........................................................................................................
+
+According to the structured to get, 
+I created a folder with name - "VM-ACCELERATOR" as the main one,
+under that,
+	create a folders - buildandreleasetask, images
+
+
+
+------->> STEP-1
+
+	inside the buildandreleasetask, 
+	run the following commands in the terminal
+		> npm init --yes
+		> npm install azure-pipelines-task-lib --save
+		> npm install @types/node --save-dev
+		> npm install @types/q --save-dev
+		> echo node_modules>.gitignore
+		> npm install typescript@4.6.3 --save-dev
+
+
+
+------->> STEP-2: create main files
+
+	Create a task.json, index.ts files in the buildandreleasetask folder
+	copy and paste the code as there in the same directory as I uploaded
+	and convert the index.ts to index.js that can be generate new one by giving command
+		> tsc index.ts
+
+	and create tsconfig.json compiler options by giving the command
+		> tsc --init --target es6
+
+
+
+------->> STEP-3: create json file for extension
+
+	Create a file vss-extension.json file in src folder add all the required fields
+	and paste the code as there in the same directory as I uploaded
+	
+	and the most important placeholder is the taskguid, 
+	and it must be unique. 
+	To generate GUID use the below code in powershell 
+	and copy paste in task.json and vss-extension.json
+		> (New-Guid).Guid
+
+
+
+------->> STEP-4: Create extension
+
+	Package the extension using command: 
+		> tfx extension create --manifest-globs vss-extension.json
+	This will create an extension file which is of format .vsix
+
+
+
+------->> STEP-5: Publish extension
+
+	Go to your publisher profile if not created, 
+	create a publisher here: Create/Manage publisher
+	
+	After navigating to your publisher profile click on “New extension”,
+	Select Azure DevOps and upload .vsix file which is packaged earlier.
+
+	This will validate the extension and once validation succeeded 
+	you can edit or share the extension by Right-click your extension.
+
+
+
+........................................................................................................................
+If we're running through local,
+better use the following formats,
+
+$env:LOCAL="true"
+$env:SUBSCRIPTION_ID="23tty..."
+$env:CLIENT_ID="4t665uhymj67i..."
+$env:SECRET="6hyyhnyu-..."
+$env:TENANT_ID="ad534rgbm..."
+$env:RESOURCE_GROUP_NAME="RG-DEVOPS-EXPLORE"
+$env:VM_NAME="myVM"
+$env:VM_SIZE="Standard_DS1_v2"
+$env:ADMIN_USER_NAME="adminuser"
+$env:ADMIN_PASSWORD="P@ssw0rd123"
+$env:CONFIRM_PASSWORD="P@ssw0rd123"
+$env:AUTHENTICATION_TYPE="password"
+$env:INBOUND_PORT_RULES="all"
+$env:NIC_NAME="myNIC"
+$env:SUBNET_NAME="mySubnet"
+$env:PUBLIC_IP_NAME="myvm-public-ip"
+$env:VNET_NAME="myVNet"
+$env:OS_DISK_NAME="myOSDisk"
+$env:OS_DISK_SIZE_GB="128"
+$env:OS_TYPE="windows"
+
+Make sure to check with code if we're runing through local,
+which mean that the az subscription details and authentications were not involved here
+	

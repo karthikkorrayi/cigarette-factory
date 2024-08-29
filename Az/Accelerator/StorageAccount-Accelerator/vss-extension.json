@@ -1,0 +1,51 @@
+{
+    "manifestVersion": 1,
+    "id": "8222d7a3-236d-40c0-a3fc-068a6e4f157c",
+    "name": "CreateStorageAccount",
+    "version": "0.0.0",
+    "publisher": "KorrayiKarthik",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "description": "Deploy Storage Account to Azure",
+    "tags": [
+        "Build",
+        "Release",
+        "Azure Pipelines",
+        "macOS",
+        "linux",
+        "windows",
+        "AzureDevOps",
+        "DevOps",
+        "Azure",
+        "StorageAccount"
+    ],
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "images/icon.png"
+    },
+    "content": {
+        "details": { "path": "README.md" },
+        "license": { "path": "LICENSE" }
+    },
+    "files": [
+        { "path": "buildreleasetask" },
+        { "path": "images", "addressable": true }
+    ],
+    "contributions": [
+        {
+            "id": "storage-account-build-release-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "buildreleasetask"
+            }
+        }
+    ]
+}

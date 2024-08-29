@@ -1,0 +1,169 @@
+{
+  "id": "8fc6a932-1818-4523-a60b-7bcf7900c768",
+  "name": "CreateVMTask",
+  "friendlyName": "Create Azure VM",
+  "description": "Create Azure Virtual Machines",
+  "helpMarkDown": "",
+  "preview": false,
+  "category": "Utility",
+  "author": "Korrayi Karthik",
+  "version": {
+    "Major": 0,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "instanceNameFormat": "$(actionType) Azure Virtual Machines",
+  "groups": [],
+  "inputs": [
+    {
+      "name": "azureSubscriptionEndpoint",
+      "type": "connectedService:AzureRM",
+      "label": "Azure subscription",
+      "helpMarkDown": "Select the Azure Resource Manager subscription, which contains Azure Virtual Machines. Note: To configure a new service connection, select the Azure subscription from the list and click 'Authorize'. If your subscription is not listed or if you want to use an existing Service Principal, you can set up an Azure service connection using the 'Add' or 'Manage' button.",
+      "defaultValue": "",
+      "required": true
+    },
+    {
+      "name": "resourceGroupName",
+      "label": "Azure VM Resource Group",
+      "type": "pickList",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "",
+      "properties": {
+        "EditableOptions": "True"
+      }
+    },
+    {
+      "name": "vmName",
+      "label": "Virtual Machine Name",
+      "type": "string",
+      "defaultValue": "",
+      "required": true
+    },
+    {
+      "name": "vmSize",
+      "label": "Virtual Machine Size",
+      "type": "string",
+      "defaultValue": "",
+      "required": true
+    },
+    {
+      "name": "authenticationType",
+      "label": "Authentication Type",
+      "type": "pickList",
+      "defaultValue": "",
+      "options": {
+        "password": "Password",
+        "sshPublicKey": "SSH Public Key"
+      },
+      "required": true
+    },
+    {
+      "name": "adminUsername",
+      "label": "Admin Username",
+      "type": "string",
+      "defaultValue": "",
+      "required": true
+    },
+    {
+      "name": "adminPassword",
+      "label": "Admin Password",
+      "type": "string",
+      "defaultValue": "",
+      "required": true
+    },
+    {
+      "name": "confirmPassword",
+      "label": "Confirm Admin Password",
+      "type": "string",
+      "defaultValue": "",
+      "required": true
+    },
+    {
+      "name": "inboundPortRules",
+      "label": "Inbound Port Rules",
+      "type": "string",
+      "defaultValue": "all",
+      "required": true
+    },
+    {
+      "name": "nicName",
+      "label": "Network Interface (NIC)",
+      "type": "string",
+      "defaultValue": "",
+      "required": true
+    },
+    {
+      "name": "subnetName",
+      "label": "Subnet Name",
+      "type": "string",
+      "defaultValue": "",
+      "required": true
+    },
+    {
+      "name": "publicIpName",
+      "label": "Public IP Name",
+      "type": "string",
+      "defaultValue": "",
+      "required": true
+    },
+    {
+      "name": "vnetName",
+      "label": "Virtual Network (VNet) Name",
+      "type": "string",
+      "defaultValue": "",
+      "required": true
+    },
+    {
+      "name": "osDiskName",
+      "label": "OS Disk Name",
+      "type": "string",
+      "defaultValue": "",
+      "required": true
+    },
+    {
+      "name": "osDiskSizeGB",
+      "label": "OS Disk Size (GB)",
+      "type": "number",
+      "defaultValue": "",
+      "required": true
+    },
+    {
+      "name": "osType",
+      "label": "OS Type",
+      "type": "pickList",
+      "defaultValue": "",
+      "options": {
+        "windows": "Windows",
+        "linux": "Linux"
+      },
+      "required": true
+    },
+    {
+      "name": "actionType",
+      "label": "Action type",
+      "type": "pickList",
+      "defaultValue": "Create",
+      "options": {
+        "create": "Create"
+      },
+      "required": false
+    }
+  ],
+  "dataSourceBindings": [
+    {
+      "target": "resourceGroupName",
+      "endpointId": "$(azureSubscriptionEndpoint)",
+      "endpointUrl": "{{{endpoint.url}}}/subscriptions/{{{endpoint.subscriptionId}}}/resourceGroups?api-version=2021-04-01",
+      "resultSelector": "jsonpath:$.value[*].name",
+      "resultTemplate": "{{#distinct}}"
+    }
+  ],
+  "execution": {
+    "Node": {
+      "target": "index.js",
+      "argumentFormat": ""
+    }
+  }
+}

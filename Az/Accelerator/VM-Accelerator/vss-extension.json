@@ -1,0 +1,50 @@
+{
+    "manifestVersion": 1,
+    "id": "8fc6a932-1818-4523-a60b-7bcf7900c768",
+    "name": "Create-VM",
+    "version": "0.0.0",
+    "publisher": "KorrayiKarthik",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "Deploy VM to Azure",
+    "tags": [
+      "Build",
+      "Release",
+      "Azure Pipelines",
+      "macOS",
+      "linux",
+      "windows",
+      "AzureDevOps",
+      "DevOps",
+      "Azure",
+      "ContainerRegistries"
+    ],
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "images/extension-icon.png"
+    },
+    "content": {
+      "details": { "path": "README.md" },
+      "license": { "path": "LICENSE" }
+    },
+    "files": [
+        { "path": "buildandreleasetask" }
+    ],
+    "contributions": [
+        {
+          "id": "vm-build-release-task",
+          "type": "ms.vss-distributed-task.task",
+          "targets": [
+              "ms.vss-distributed-task.tasks"
+          ],
+          "properties": {
+            "name": "buildandreleasetask"
+        }
+    }
+    ]
+  }

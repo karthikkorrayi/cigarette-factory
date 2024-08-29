@@ -1,0 +1,71 @@
+{
+    "id": "8222d7a3-236d-40c0-a3fc-068a6e4f157c",
+    "name": "StorageAccountTask",
+    "friendlyName": "Create Storage Account",
+    "description": "Create Azure Storage Accounts",
+    "helpMarkDown": "",
+    "preview": false,
+    "category": "Utility",
+    "author": "Korrayi Karthik",
+    "version": {
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 0
+    },
+    "instanceNameFormat": "$(actionType) Azure Storage Accounts",
+    "groups": [],
+    "inputs": [
+        {
+          "name": "azureSubscriptionEndpoint",
+          "type": "connectedService:AzureRM",
+          "label": "Azure subscription",
+          "helpMarkDown": "Select the Azure Resource Manager subscription, which contains Azure Storage Account. Configure new service connection if necessary.",
+          "defaultValue": "",
+          "required": true
+        },
+        {
+          "name": "resourceGroupName",
+          "label": "Azure Storage Account resource group",
+          "type": "pickList",
+          "defaultValue": "",
+          "required": true,
+          "helpMarkDown": "",
+          "properties": {
+            "EditableOptions": true
+          }
+        },
+        {
+          "name": "storageAccountName",
+          "label": "Azure Storage Account Name",
+          "type": "string",
+          "defaultValue": "",
+          "required": true
+        },
+        {
+          "name": "actionType",
+          "label": "Action type",
+          "type": "pickList",
+          "defaultValue": "Create",
+          "options": {
+            "create": "Create"
+          },
+          "required": false
+        }
+    ],
+    "dataSourceBindings": [
+      {
+        "target": "resourceGroupName",
+        "endpointId": "$(azureSubscriptionEndpoint)",
+        "endpointUrl": "{{{endpoint.url}}}/subscriptions/{{{endpoint.subscriptionId}}}/resourceGroups?api-version=2021-04-01",
+        "resultSelector": "jsonpath:$.value[*]",
+        "resultTemplate": "{{{ #extractResource id resourcegroups}}}"
+      }
+    ],
+    "execution": {
+      "Node": {
+        "target": "index.js",
+        "argumentFormat": ""
+      }
+    }
+  }
+  

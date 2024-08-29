@@ -1,0 +1,114 @@
+//index.ts without async
+ 
+import * as tl from 'azure-pipelines-task-lib/task';
+import { DefaultAzureCredential } from '@azure/identity';
+import { StorageManagementClient } from '@azure/arm-storage';
+ 
+function run() {
+    try {
+        const azureSubscriptionEndpoint = tl.getInput('azureSubscriptionEndpoint', true) || '';
+        const subscriptionId = tl.getEndpointDataParameter(azureSubscriptionEndpoint, 'subscriptionId', true) || '';
+        const resourceGroupName = tl.getInput('resourceGroupName', true) || '';
+        const storageAccountName = tl.getInput('storageAccountName', true) || '';
+ 
+        const creds = new DefaultAzureCredential();
+        const client = new StorageManagementClient(creds, subscriptionId);
+ 
+        client.storageAccounts.checkNameAvailability({
+            name: storageAccountName,
+            type: 'Microsoft.Storage/storageAccounts'
+        }).then(accountCheck => {
+            if (accountCheck.nameAvailable) {
+                const storageParameters = {
+                    location: "Southeast Asia",
+                    sku: { name: 'Standard_LRS' },
+                    kind: 'StorageV2'
+                };
+ 
+                return client.storageAccounts.beginCreateAndWait(resourceGroupName, storageAccountName, storageParameters);
+            } else {
+                console.log(`Storage account named ${storageAccountName} already exists.`);
+                return null;
+            }
+        }).then(result => {
+            if (result) {
+                console.log(`Storage account ${storageAccountName} created successfully!`);
+            }
+        }).catch(err => {
+            console.error('An error occurred:', err);
+        });
+    } catch (err) {
+        console.error('An error occurred:', err);
+    }
+}
+ 
+run();
+
+
+
+
+
+
+
+
+
+//local run index.ts code;
+ 
+import { ClientSecretCredential, DefaultAzureCredential } from "@azure/identity";
+import { StorageManagementClient } from "@azure/arm-storage";
+import * as util from "util";
+const tl = require("azure-pipelines-task-lib/task");
+ 
+const tenantId = process.env["TENANT_ID"] as string;
+const clientId = process.env["CLIENT_ID"] as string;
+const secret = process.env["SECRET"] as string;
+const subscriptionId = process.env["SUBSCRIPTION_ID"] as string;
+const resourceGroupName = process.env["RESOURCE_GROUP_NAME"] as string;
+const location = process.env["LOCATION"] || "Southeast Asia";
+const requiredEnvVariables = { tenantId, clientId, secret, subscriptionId, resourceGroupName };
+ 
+for (const [key, value] of Object.entries(requiredEnvVariables)) {
+    if (!value) {
+        throw new Error(`Environment variable ${key} is not defined.`);
+    }
+}
+ 
+const credentials = process.env.production ? new DefaultAzureCredential() : new ClientSecretCredential(tenantId, clientId, secret);
+ 
+const storageClient = new StorageManagementClient(credentials, subscriptionId);
+ 
+async function createStorageAccount() {
+    const storageAccountName = `${resourceGroupName.toLowerCase()}storage`.replace(/-/g, '');
+    console.log("\nCreating storage account: " + storageAccountName);
+    const createParameters = {
+        location: location,
+        sku: { name: "Standard_LRS" },
+        kind: "StorageV2",
+        tags: { project: "azure-storage-account" },
+    };
+    return await storageClient.storageAccounts.beginCreateAndWait(resourceGroupName, storageAccountName, createParameters);
+}
+ 
+async function main() {
+    try {
+        const storageAccount = await createStorageAccount();
+        console.log(`Storage account ${storageAccount.name} created successfully.`);
+    } catch (err) {
+        if (err instanceof Error) {
+            console.error("An error occurred:", err);
+            tl.setResult(tl.TaskResult.Failed, err.message);
+        } else {
+            console.error("An unknown error occurred:", err);
+            tl.setResult(tl.TaskResult.Failed, "Unknown error occurred");
+        }
+        throw err;
+    }
+}
+ 
+main()
+    .then(() => {
+        console.log(`Success - storage account created in resource group: ${resourceGroupName}`);
+    })
+    .catch(err => {
+        console.error('An error occurred while creating the storage account:', err);
+    });
